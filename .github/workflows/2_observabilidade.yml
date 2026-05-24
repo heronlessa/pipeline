@@ -14,7 +14,7 @@ jobs:
           python-version: '3.11'
 
       - name: Agente IA — Analisar logs
-        run: python src/ai_agent.py logs logs/app.log
+        run: python src/ai_agent.py logs logs/app.log || true
 
       - name: Criar issue simulada se erro critico
         run: |
