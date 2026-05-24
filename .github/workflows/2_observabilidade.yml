@@ -16,17 +16,19 @@ jobs:
       - name: Agente IA — Analisar logs
         run: |
           echo "🤖 Agente de Incidente analisando logs..."
-          python src/ai_agent.py logs logs/app.log || true
+          python src/ai_agent.py logs logs/app.log
 
       - name: Criar issue simulada se erro crítico
         run: |
-          RESULTADO=$(python src/ai_agent.py logs logs/app.log 2>/dev/null || echo '{}')
-          CRIAR=$(echo $RESULTADO | python -c "import sys,json; d=json.load(sys.stdin); print(d.get('criar_issue', False))")
-          if [ "$CRIAR" = "True" ]; then
-            echo "🚨 Issue criada: Erros críticos detectados nos logs!"
-          else
-            echo "✅ Nenhum erro crítico. Issue não necessária."
-          fi
+          python src/ai_agent.py logs logs/app.log > resultado.json 2>/dev/null || true
+          python -c "
+import json
+data = json.load(open('resultado.json'))
+if data.get('criar_issue'):
+    print('Issue criada: Erros criticos detectados nos logs!')
+else:
+    print('Nenhum erro critico. Issue nao necessaria.')
+"
 
   analisar-metricas:
     runs-on: ubuntu-latest
@@ -36,9 +38,9 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Agente IA — Analisar métricas
+      - name: Agente IA — Analisar metricas
         run: |
-          echo "🤖 Agente de Custo analisando métricas do sistema..."
+          echo "🤖 Agente de Custo analisando metricas do sistema..."
           python src/ai_agent.py metricas metrics/metrics.json || true
 
   analisar-traces:
@@ -51,5 +53,5 @@ jobs:
 
       - name: Agente IA — Analisar traces
         run: |
-          echo "🤖 Agente de Deploy analisando trace distribuído..."
+          echo "🤖 Agente de Deploy analisando trace distribuido..."
           python src/ai_agent.py traces traces/trace.txt
