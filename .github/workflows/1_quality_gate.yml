@@ -18,21 +18,16 @@ jobs:
         run: pip install pytest pytest-cov
 
       - name: Executar testes com cobertura
+        run: pytest tests/ --cov=src/app --cov-report=term-missing 2>&1 | tee coverage_output.txt
+
+      - name: Extrair cobertura
         run: |
-          pytest tests/ --cov=src --cov-report=term-missing --ignore=src/ai_agent.py 2>&1 | tee coverage_output.txt
-          COVERAGE=$(python -c "
-import re
-content = open('coverage_output.txt').read()
-match = re.search(r'src/app\.py\s+\d+\s+\d+\s+(\d+)%', content)
-print(match.group(1) if match else '0')
-")
-          echo "COVERAGE=$COVERAGE" >> $GITHUB_ENV
-          echo "Cobertura obtida: $COVERAGE%"
+          grep "src/app.py" coverage_output.txt | awk '{print $NF}' | tr -d '%' > cobertura.txt
+          cat cobertura.txt
+          echo "COVERAGE=$(cat cobertura.txt)" >> $GITHUB_ENV
 
       - name: Agente IA — Analisar qualidade
-        run: |
-          echo "Agente de Testes analisando cobertura de ${{ env.COVERAGE }}%..."
-          python src/ai_agent.py qualidade ${{ env.COVERAGE }}
+        run: python src/ai_agent.py qualidade ${{ env.COVERAGE }}
 
-      - name: Resultado do Quality Gate
-        run: echo "Quality Gate APROVADO — deploy liberado"
+      - name: Quality Gate aprovado
+        run: echo "Deploy liberado com cobertura de ${{ env.COVERAGE }}%"
