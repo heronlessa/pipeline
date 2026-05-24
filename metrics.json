@@ -1,0 +1,7 @@
+{
+  "cpu": 92,
+  "memory": 88,
+  "latency_ms": 3000,
+  "requests_per_second": 450,
+  "error_rate": 0.05
+}

@@ -1,0 +1,55 @@
+name: "2. Observabilidade Inteligente"
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  analisar-logs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Agente IA — Analisar logs
+        run: |
+          echo "🤖 Agente de Incidente analisando logs..."
+          python src/ai_agent.py logs logs/app.log || true
+
+      - name: Criar issue simulada se erro crítico
+        run: |
+          RESULTADO=$(python src/ai_agent.py logs logs/app.log 2>/dev/null || echo '{}')
+          CRIAR=$(echo $RESULTADO | python -c "import sys,json; d=json.load(sys.stdin); print(d.get('criar_issue', False))")
+          if [ "$CRIAR" = "True" ]; then
+            echo "🚨 Issue criada: Erros críticos detectados nos logs!"
+          else
+            echo "✅ Nenhum erro crítico. Issue não necessária."
+          fi
+
+  analisar-metricas:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Agente IA — Analisar métricas
+        run: |
+          echo "🤖 Agente de Custo analisando métricas do sistema..."
+          python src/ai_agent.py metricas metrics/metrics.json || true
+
+  analisar-traces:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Agente IA — Analisar traces
+        run: |
+          echo "🤖 Agente de Deploy analisando trace distribuído..."
+          python src/ai_agent.py traces traces/trace.txt

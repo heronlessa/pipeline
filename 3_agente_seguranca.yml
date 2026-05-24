@@ -1,0 +1,25 @@
+name: "3. Agente de Segurança"
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  agente-seguranca:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Agente IA — Analisar vulnerabilidades
+        run: |
+          echo "🤖 Agente de Segurança escaneando o código..."
+          python src/ai_agent.py seguranca security/codigo_vulneravel.py || true
+
+      - name: Agente IA — Verificar código principal
+        run: |
+          echo "🔍 Verificando src/app.py..."
+          python src/ai_agent.py seguranca src/app.py
+          echo "✅ Código principal aprovado pelo Agente de Segurança"

@@ -1,0 +1,8 @@
+INFO  2024-01-15 10:00:01 Servidor iniciado na porta 8080
+INFO  2024-01-15 10:00:05 Conexão com banco de dados estabelecida
+INFO  2024-01-15 10:01:00 Processando pedido #1042
+ERROR 2024-01-15 10:01:03 Database timeout após 30s - pedido #1042
+INFO  2024-01-15 10:01:10 Tentando reconexão com banco de dados
+CRITICAL 2024-01-15 10:01:15 Falha na tarefa de pagamento - serviço indisponível
+INFO  2024-01-15 10:01:20 Rollback executado com sucesso
+ERROR 2024-01-15 10:02:00 Memória insuficiente no worker-3
