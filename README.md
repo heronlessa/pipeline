@@ -69,8 +69,6 @@ pytest tests/ --cov=src --cov-report=term-missing
 
 ---
 
-## Resposta à questão da atividade
-
 **Como a IA pode transformar pipelines tradicionais em sistemas autônomos de DevOps?**
 
-Pipelines tradicionais executam etapas fixas e param em caso de erro — sem contexto, sem julgamento. Com IA, o pipeline passa a **interpretar** o que aconteceu e **decidir** o que fazer. Em vez de apenas reportar "cobertura 65%", o agente analisa o risco, bloqueia o deploy automaticamente e sugere onde adicionar testes. Em vez de apenas logar um erro, o agente abre uma issue com o contexto completo. A IA transforma o pipeline de um executor sequencial em um **sistema que raciocina sobre o próprio ambiente** — percebendo, decidindo e agindo sem esperar intervenção humana.
+Pipelines tradicionais executam etapas fixas e param em caso de erro; sem contexto, sem julgamento. Com IA, o pipeline passa a **interpretar** o que aconteceu e **decidir** o que fazer. Em vez de apenas reportar "cobertura 65%", o agente analisa o risco, bloqueia o deploy automaticamente e sugere onde adicionar testes. Em vez de apenas logar um erro, o agente abre uma issue com o contexto completo. A IA transforma o pipeline de um executor sequencial em um **sistema que raciocina sobre o próprio ambiente** - percebendo, decidindo e agindo sem esperar intervenção humana.
